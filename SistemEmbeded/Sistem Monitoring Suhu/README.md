@@ -2,7 +2,7 @@
 <sub>Dual Sensor Fusion with Kalman Filter, OLED Display, FreeRTOS & Actuator Control</sub>
 
 <p align="center">
-  <img src="/assets/temperature_monitoring_banner.png?height=400&width=700&query=ESP32 temperature monitoring system with dual sensors OLED display" alt="ESP32 Temperature Monitoring System" width="700"/>
+  <img src="/asset/temperature_monitoring_banner.png?height=400&width=700&query=ESP32 temperature monitoring system with dual sensors OLED display" alt="ESP32 Temperature Monitoring System" width="700"/>
 </p>
 
 <p align="center">
