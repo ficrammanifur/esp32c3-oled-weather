@@ -114,53 +114,38 @@ graph TD
 #### Arsitektur FreeRTOS
 Program menggunakan **4 FreeRTOS Tasks** untuk multitasking non-blocking dan thread-safe data sharing via **Mutex Semaphores**:
 ```mermaid
-TB
-    A["🎛️ FreeRTOS Scheduler
-Core 0 & Core 1"] --> B["📡 Sensor Task
-Priority 3 | Stack 4096
-Interval: 2000ms"]
-    A --> C["🔧 Filter Task
-Priority 2 | Stack 4096
-Interval: 500ms"]
-    A --> D["📺 Display Task
-Priority 1 | Stack 4096
-Interval: 500ms"]
-    A --> E["⚙️ Actuator Task
-Priority 2 | Stack 4096
-Continuous Loop"]
-B -->|DHT22: 1-wire
-NTC: ADC12-bit| F["📊 SensorData struct
-{dht, ntc, filtered}"]
-B -->|xSemaphoreTake dataMutex| F
-C -->|Read SensorData| F
-C -->|Kalman Filter 1D| G["🎯 Filtered Temp
-estimate, error,
-processNoise,
-measurementNoise"]
-C -->|xSemaphoreTake dataMutex| F
-C -->|Update filtered| F
-D -->|Dequeue SensorData| F
-D -->|"I2C (GPIO 21/22)"| H["📺 OLED Display
-Title, Temp, Status"]
-E -->|Read filtered temp| F
-E -->|Check > 25°C| I{Threshold}
-I -->|YES| J["🟢 HOT STATE
-Buzzer HIGH
-Stepper Rotate"]
-I -->|NO| K["🔴 NORMAL STATE
-Buzzer LOW
-Stepper Stop"]
-F -->|Protected by
-dataMutex| L["🔒 Thread-Safe Access"]
-H -->|Protected by
-oledMutex| L
-style A fill:#ff9,stroke:#333,stroke-width:2px
-style B fill:#9f9,stroke:#333,stroke-width:2px
-style C fill:#9f9,stroke:#333,stroke-width:2px
-style D fill:#9f9,stroke:#333,stroke-width:2px
-style E fill:#9f9,stroke:#333,stroke-width:2px
-style I fill:#f99,stroke:#333,stroke-width:2px
-style L fill:#bbf,stroke:#333,stroke-width:2px
+graph TB
+    A["🎛️ FreeRTOS Scheduler\nCore 0 & Core 1"] --> B["📡 Sensor Task\nPriority 3 | Stack 4096\nInterval: 2000ms"]
+    A --> C["🔧 Filter Task\nPriority 2 | Stack 4096\nInterval: 500ms"]
+    A --> D["📺 Display Task\nPriority 1 | Stack 4096\nInterval: 500ms"]
+    A --> E["⚙️ Actuator Task\nPriority 2 | Stack 4096\nContinuous Loop"]
+   
+    B -->|"DHT22: 1-wire\nNTC: ADC12-bit"| F["📊 SensorData struct\n{dht, ntc, filtered}"]
+    B -->|"xSemaphoreTake dataMutex"| F
+   
+    C -->|"Read SensorData"| F
+    C -->|"Kalman Filter 1D"| G["🎯 Filtered Temp\nestimate, error,\nprocessNoise,\nmeasurementNoise"]
+    C -->|"xSemaphoreTake dataMutex"| F
+    C -->|"Update filtered"| F
+   
+    D -->|"Dequeue SensorData"| F
+    D -->|"I2C GPIO 21/22"| H["📺 OLED Display\nTitle, Temp, Status"]
+   
+    E -->|"Read filtered temp"| F
+    E -->|"Check > 25°C"| I{"Threshold"}
+    I -->|YES| J["🟢 HOT STATE\nBuzzer HIGH\nStepper Rotate"]
+    I -->|NO| K["🔴 NORMAL STATE\nBuzzer LOW\nStepper Stop"]
+   
+    F -->|"Protected by\ndataMutex"| L["🔒 Thread-Safe Access"]
+    H -->|"Protected by\noledMutex"| L
+   
+    style A fill:#ff9,stroke:#333,stroke-width:2px
+    style B fill:#9f9,stroke:#333,stroke-width:2px
+    style C fill:#9f9,stroke:#333,stroke-width:2px
+    style D fill:#9f9,stroke:#333,stroke-width:2px
+    style E fill:#9f9,stroke:#333,stroke-width:2px
+    style I fill:#f99,stroke:#333,stroke-width:2px
+    style L fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
 ---
