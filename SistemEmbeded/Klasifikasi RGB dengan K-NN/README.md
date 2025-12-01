@@ -204,37 +204,37 @@ Sistem embedded dirancang untuk deteksi warna portable dan real-time menggunakan
 └──────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────┐
-│                    K-NN CLASSIFICATION ENGINE                     │
+│                    K-NN CLASSIFICATION ENGINE                    │
 ├──────────────────────────────────────────────────────────────────┤
 │ (Optional: Implementasi sederhana pada ESP32)                    │
 │                                                                  │
-│ Stored Centroids (dari training data Python):                   │
-│ ┌─────────────────────────────────────────────────────────────┐ │
-│ │ RED CENTROID:     [175, 54,  61]                           │ │
-│ │ GREEN CENTROID:   [105, 99,  60]                           │ │
-│ │ BLUE CENTROID:    [107, 88,  77]                           │ │
-│ │ NEUTRAL CENTROID: [150, 140, 130]                          │ │
-│ └─────────────────────────────────────────────────────────────┘ │
+│ Stored Centroids (dari training data Python):                    │
+│ ┌─────────────────────────────────────────────────────────────┐  │
+│ │ RED CENTROID:     [175, 54,  61]                            │  │
+│ │ GREEN CENTROID:   [105, 99,  60]                            │  │
+│ │ BLUE CENTROID:    [107, 88,  77]                            │  │
+│ │ NEUTRAL CENTROID: [150, 140, 130]                           │  │
+│ └─────────────────────────────────────────────────────────────┘  │
 │                                                                  │
-│ Euclidean Distance Calculation:                                 │
-│ d = √[(r_norm - r_centroid)² + (g_norm - g_centroid)² +        │
-│       (b_norm - b_centroid)²]                                   │
+│ Euclidean Distance Calculation:                                  │
+│ d = √[(r_norm - r_centroid)² + (g_norm - g_centroid)² +          │
+│       (b_norm - b_centroid)²]                                    │
 │                                                                  │
-│ Classification: Argmin(d) → Nearest Centroid = Predicted Class │
+│ Classification: Argmin(d) → Nearest Centroid = Predicted Class   │
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────┐
-│                      OUTPUT & VISUALIZATION                       │
+│                      OUTPUT & VISUALIZATION                      │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│  Serial Output:           LED RGB Indicator (Optional):         │
-│  ├─ "175,54,61"    ─────→ ├─ GPIO 5: Red LED (PWM)            │
-│  ├─ "105,99,60"    ─────→ ├─ GPIO 6: Green LED (PWM)          │
-│  └─ "107,88,77"    ─────→ └─ GPIO 7: Blue LED (PWM)           │
+│  Serial Output:           LED RGB Indicator (Optional):          │
+│  ├─ "175,54,61"    ─────→ ├─ GPIO 5: Red LED (PWM)               │
+│  ├─ "105,99,60"    ─────→ ├─ GPIO 6: Green LED (PWM)             │
+│  └─ "107,88,77"    ─────→ └─ GPIO 7: Blue LED (PWM)              │
 │                                                                  │
-│  Real-Time Plot:  │  Confusion Matrix:  │  Accuracy Report:     │
-│  (Python PC)      │  (Training)         │  (Python Metrics)     │
+│  Real-Time Plot:  │  Confusion Matrix:  │  Accuracy Report:      │
+│  (Python PC)      │  (Training)         │  (Python Metrics)      │
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘
 ```
