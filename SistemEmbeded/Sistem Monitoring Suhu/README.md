@@ -93,7 +93,7 @@ graph TD
 
 #### Wiring Diagram Detail
 <p align="center">
-  <img src="/assets/temperature_monitor_wiring.png?height=400&width=700&query=ESP32 DHT22 NTC OLED buzzer stepper motor wiring diagram" alt="Wiring Diagram" width="700"/><br/>
+  <img src="asset/temperature_monitoring_banner.png?height=400&width=700&query=ESP32 DHT22 NTC OLED buzzer stepper motor wiring diagram" alt="Wiring Diagram" width="700"/><br/>
   <em>Diagram Pengkabelan Lengkap: Sensor, Display, Aktuator</em><br/>
   <strong>⚙️ Pin Configuration:</strong><br/>
   🔹 <strong>DHT22</strong>: Data → GPIO 4 (dengan pull-up 4.7kΩ)<br/>
