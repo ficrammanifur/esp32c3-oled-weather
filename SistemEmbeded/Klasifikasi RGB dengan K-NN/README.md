@@ -83,7 +83,7 @@ Sistem embedded dirancang untuk deteksi warna portable dan real-time menggunakan
 
 #### Diagram Blok Hardware
 
-\`\`\`
+```
 ┌─────────────────────────────────────────────────────────────┐
 │                    Sistem Klasifikasi RGB                   │
 └─────────────────────────────────────────────────────────────┘
@@ -108,11 +108,11 @@ Sistem embedded dirancang untuk deteksi warna portable dan real-time menggunakan
        │                            │
        └────────────────────────────→ USB Serial Monitor
                                       (Output Hasil)
-\`\`\`
+```
 
 #### Wiring Diagram Koneksi
 
-\`\`\`
+```
 TCS34725 Sensor ─────── ESP32-C3 DevKit
 ─────────────────────────────────────
 VCC (3.3V)   ─────────→ 3V3
@@ -121,7 +121,7 @@ SDA (GPIO 7) ─────┬───→ GPIO 8 (SDA) + R 10kΩ → 3V3
 SCL (GPIO 6) ─────┼───→ GPIO 9 (SCL) + R 10kΩ → 3V3
                   │
               (Pull-up)
-\`\`\`
+```
 
 ---
 
@@ -131,7 +131,7 @@ Program Python menggunakan scikit-learn untuk data processing, model training, d
 
 #### Data Flow Diagram (DFD)
 
-\`\`\`
+```
 ┌──────────────────┐
 │ dataset-warna.txt│  (40 samples, 4 kelas)
 │ (RGB + Class)    │
@@ -175,7 +175,7 @@ Program Python menggunakan scikit-learn untuk data processing, model training, d
 │    - Show distance to centroids  │
 │    - Confidence metrics          │
 └──────────────────────────────────┘
-\`\`\`
+```
 
 ---
 
@@ -198,7 +198,7 @@ Dataset berisi 40 sampel RGB yang dikumpulkan dari objek warna nyata menggunakan
 
 #### Contoh Data
 
-\`\`\`
+```
 R,    G,    B,      Class
 175,  54,   61,     RED
 176,  52,   59,     RED
@@ -211,14 +211,14 @@ R,    G,    B,      Class
 ...
 150,  140,  130,    NEUTRAL
 151,  139,  129,    NEUTRAL
-\`\`\`
+```
 
 ### ⚙️ Metodologi K-NN
 
 #### Langkah-Langkah Analisis
 
 **1. Impor Library & Pemuatan Data**
-\`\`\`python
+```python
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -232,31 +232,31 @@ from mpl_toolkits.mplot3d import Axes3D
 df = pd.read_csv('dataset-warna.txt')
 X = df[['R', 'G', 'B']]
 y = df['Class']
-\`\`\`
+```
 
 **2. Pemisahan Data & Pra-pemrosesan**
 - **Train-Test Split**: 70% training (28 sampel), 30% testing (12 sampel)
 - **Stratified Split**: Memastikan setiap kelas terwakili di train & test set
-\`\`\`python
+```python
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, stratify=y, random_state=42
 )
-\`\`\`
+```
 
 **3. Feature Scaling (Standardization)**
 Sangat penting untuk K-NN karena algoritma mengandalkan jarak Euclidean:
 $$d = \sqrt{(R_1 - R_2)^2 + (G_1 - G_2)^2 + (B_1 - B_2)^2}$$
 
-\`\`\`python
+```python
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
-\`\`\`
+```
 
 **4. Pencarian Nilai K Optimal**
 Mencoba K dari 1 hingga 20 dan memplot training vs testing accuracy:
 
-\`\`\`python
+```python
 train_acc = []
 test_acc = []
 
@@ -273,13 +273,13 @@ plt.xlabel('K Value')
 plt.ylabel('Accuracy')
 plt.legend()
 plt.show()
-\`\`\`
+```
 
 **Hasil**: K=1 memberikan **akurasi testing 91.67%** (11/12 sampel benar)
 
 **5. Evaluasi Model Akhir (K=1)**
 
-\`\`\`python
+```python
 knn_final = KNeighborsClassifier(n_neighbors=1)
 knn_final.fit(X_train_scaled, y_train)
 y_pred = knn_final.predict(X_test_scaled)
@@ -289,27 +289,27 @@ print("\nConfusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
-\`\`\`
+```
 
 ### 📈 Hasil Pelatihan
 
 #### Confusion Matrix (K=1)
 
-\`\`\`
+```
               Prediksi
            RED GREEN BLUE NEUTRAL
 Aktual RED   3    1    0    0
        GREEN 0    3    0    0
        BLUE  0    0    2    1
        NEUTRAL 0   0    0    2
-\`\`\`
+```
 
 - **Total Akurasi**: 91.67% (11 benar, 1 error)
 - **Error**: 1 sampel RED diprediksi BLUE (atau sebaliknya)
 
 #### Classification Report (per Kelas)
 
-\`\`\`
+```
            Precision Recall F1-Score Support
 RED        0.75      0.75   0.75     4
 GREEN      0.75      1.00   0.86     3
@@ -317,13 +317,13 @@ BLUE       1.00      0.67   0.80     3
 NEUTRAL    1.00      1.00   1.00     2
 ───────────────────────────────────────
 Avg        0.88      0.88   0.87     12
-\`\`\`
+```
 
 #### Verifikasi Jarak Euclidean
 
 Contoh prediksi untuk sampel baru RGB(120, 130, 150):
 
-\`\`\`
+```
 Sampel: [120, 130, 150]
 Setelah scaling: [-0.45, 0.32, 0.68]
 
@@ -334,7 +334,7 @@ Jarak Euclidean ke Centroid:
 - NEUTRAL: 0.95 ← TERDEKAT (K=1, pilih ini!)
 
 Prediksi: NEUTRAL ✓
-\`\`\`
+```
 
 ---
 
@@ -357,7 +357,7 @@ $$\text{RGB}_{norm} = \frac{\text{RGB}_{raw}}{\text{Clear}_{raw}} \times 255$$
 
 Membaca data sensor TCS34725 dengan **moving average filter** untuk stabilitas:
 
-\`\`\`cpp
+```cpp
 #define SAMPLES 10  // Buffer size untuk rata-rata
 uint16_t r_raw[SAMPLES], g_raw[SAMPLES], b_raw[SAMPLES], c_raw[SAMPLES];
 
@@ -391,13 +391,13 @@ uint8_t g_fix = (avg_g * 255) / avg_c;
 uint8_t b_fix = (avg_b * 255) / avg_c;
 
 Serial.printf("RGB FIX: R=%d, G=%d, B=%d\n", r_fix, g_fix, b_fix);
-\`\`\`
+```
 
 #### File: `Bandingkan-RGB.ino` (Klasifikasi K-NN)
 
 Implementasi K-NN sederhana dengan centroid (Nearest Neighbor):
 
-\`\`\`cpp
+```cpp
 // Definisi Centroid (dari pelatihan Python)
 struct ColorCategory {
   const char* name;
@@ -433,13 +433,13 @@ for (int i = 0; i < 4; i++) {
 
 Serial.printf("Detected Color: %s (distance: %.2f)\n", 
               colors[best_class].name, min_distance);
-\`\`\`
+```
 
 #### File: `cari-sample.ino` (Pengumpulan Data)
 
 Alat bantu untuk mengumpulkan sampel RGB baru ke dataset:
 
-\`\`\`cpp
+```cpp
 // Mode pengumpulan data
 if (sensor_ready) {
   uint16_t r = sensor.read16(TCS34725_RDATAL);
@@ -455,7 +455,7 @@ if (sensor_ready) {
   // Format CSV untuk di-copy ke dataset-warna.txt
   Serial.printf("%d,%d,%d,MANUAL_LABEL\n", r_norm, g_norm, b_norm);
 }
-\`\`\`
+```
 
 ---
 
@@ -465,27 +465,27 @@ if (sensor_ready) {
 
 1. **Install Python 3.8+** dan pip
 2. **Buat virtual environment**:
-   \`\`\`bash
+   ```bash
    python -m venv venv
    source venv/bin/activate  # Linux/Mac
    venv\Scripts\activate     # Windows
-   \`\`\`
+   ```
 3. **Install dependencies**:
-   \`\`\`bash
+   ```bash
    pip install pandas numpy scikit-learn matplotlib seaborn jupyter
-   \`\`\`
+   ```
 4. **Buka Jupyter Notebook**:
-   \`\`\`bash
+   ```bash
    jupyter notebook ficramm_Klasifikasi_RGB_dengan_K_NN.ipynb
-   \`\`\`
+   ```
 
 ### Bagian 2: Arduino/ESP32-C3
 
 1. **Install Arduino IDE** (v2.0+)
 2. **Tambah Board Manager URL** di Preferences:
-   \`\`\`
+   ```
    https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
-   \`\`\`
+   ```
 3. **Install library TCS34725**:
    - Sketch → Include Library → Manage Libraries
    - Cari "Adafruit TCS34725" → Install
@@ -573,7 +573,7 @@ if (sensor_ready) {
 
 ## 📁 Struktur Folder
 
-\`\`\`
+```
 Klasifikasi RGB dengan K-NN/
 ├── ficramm_Klasifikasi_RGB_dengan_K_NN.ipynb
 │   └── Notebook Python untuk analisis, training, evaluasi K-NN
@@ -596,7 +596,7 @@ Klasifikasi RGB dengan K-NN/
 │   └── sample-data.csv (data sample untuk testing)
 ├── README.md ← Anda di sini
 └── LICENSE
-\`\`\`
+```
 
 ---
 
