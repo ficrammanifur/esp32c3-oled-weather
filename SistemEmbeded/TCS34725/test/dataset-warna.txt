@@ -10,7 +10,7 @@ RED =
 8. 187,46,37 MAP ABSEN MERAH
 9. 112,86,255 LIPSTIK MERAH FARAH
 10.147,67,47 cover buku merah muda
-GRENN =
+GREEN =
 1. 96,112,47 ORIGAMI HIJAU
 2  153,82,52 CELANA hijau botol kaca
 3  136,87,56 tas hijau pacee
