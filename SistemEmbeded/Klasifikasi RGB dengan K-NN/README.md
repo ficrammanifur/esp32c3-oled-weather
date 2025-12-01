@@ -1,10 +1,10 @@
 <h1 align="center">
-🌈 Klasifikasi Warna RGB Menggunakan K-Nearest Neighbors (K-NN)<br>
+Klasifikasi Warna RGB Menggunakan K-Nearest Neighbors (K-NN)<br>
 <sub>Analisis Dataset, Pelatihan Model, & Implementasi Embedded System</sub>
 </h1>
 
 <p align="center">
-  <em>Proyek ini mendemonstrasikan implementasi lengkap algoritma K-Nearest Neighbors (K-NN) untuk mengklasifikasikan warna berdasarkan nilai RGB (Red, Green, Blue), mulai dari analisis data Python hingga implementasi real-time pada mikrokontroler ESP32-C3 dengan sensor warna TCS34725.</em>
+  <em>Proyek ini mendemonstrasikan implementasi lengkap algoritma K-Nearest Neighbors (K-NN) untuk mengklasifikasikan warna berdasarkan nilai RGB (Red, Green, Blue), mulai dari analisis data Python hingga implementasi real-time pada mikrokontroler ESP32 dengan sensor warna TCS34725.</em>
 </p>
 
 <p align="center">
