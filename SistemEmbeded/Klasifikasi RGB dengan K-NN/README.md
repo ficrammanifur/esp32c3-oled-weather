@@ -574,13 +574,15 @@ Program Python menggunakan scikit-learn untuk data processing, model training, d
 ### 🎨 Sensor TCS34725
 
 Sensor warna TCS34725 mengukur intensitas cahaya dalam 4 channel:
-- **R (Red)**: 0-1023 (12-bit)
-- **G (Green)**: 0-1023
-- **B (Blue)**: 0-1023
-- **C (Clear)**: 0-1023 (IR + visible light)
+
+- **R (Red)**: 0–1023 (12-bit)
+- **G (Green)**: 0–1023
+- **B (Blue)**: 0–1023
+- **C (Clear)**: 0–1023 (IR + visible light)
 
 Normalisasi RGB penting untuk mengurangi pengaruh pencahayaan:
-$$\text{RGB}_{norm} = \frac{\text{RGB}_{raw}}{\text{Clear}_{raw}} \times 255$$
+
+$$\mathrm{RGB_{norm}} = \frac{\mathrm{RGB_{raw}}}{\mathrm{Clear_{raw}}} \times 255$$
 
 ### 📝 Arduino Code: Data Acquisition & Normalization (RGB.ino)
 
@@ -626,9 +628,8 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725(
 #### Normalisasi RGB (RGB Fix)
 
 Formula normalisasi menggunakan Clear Channel sebagai referensi intensitas:
-```
-$$\text{RGB\_norm} = \frac{\text{RGB\_avg}}{\text{Clear\_avg}} \times 255$$
-```
+
+$$\mathrm{RGB_{norm}} = \frac{\mathrm{RGB_{raw}}}{\mathrm{Clear_{raw}}} \times 255$$
 
 ```cpp
 // Safety check: hindari pembagian 0
