@@ -584,6 +584,7 @@ Normalisasi RGB penting untuk mengurangi pengaruh pencahayaan:
 
 $$\mathrm{RGB_{norm}} = \frac{\mathrm{RGB_{raw}}}{\mathrm{Clear_{raw}}} \times 255$$
 
+
 ### 📝 Arduino Code: Data Acquisition & Normalization (RGB.ino)
 
 Program Arduino pada file `int.tsx` menunjukkan implementasi **moving average + normalization** untuk memperhalus pembacaan sensor dan menghasilkan nilai RGB yang konsisten.
@@ -629,7 +630,7 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725(
 
 Formula normalisasi menggunakan Clear Channel sebagai referensi intensitas:
 
-$$\mathrm{RGB_{norm}} = \frac{\mathrm{RGB_{raw}}}{\mathrm{Clear_{raw}}} \times 255$$
+$ \mathrm{RGB_{norm}} = \frac{\mathrm{RGB_{avg}}}{\mathrm{Clear_{avg}}} \times 255 $
 
 ```cpp
 // Safety check: hindari pembagian 0
