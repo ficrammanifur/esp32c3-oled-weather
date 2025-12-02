@@ -628,8 +628,9 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725(
 #### Normalisasi RGB (RGB Fix)
 
 Formula normalisasi menggunakan Clear Channel sebagai referensi intensitas:
-
-$$\text{RGB\_norm} = \frac{\text{RGB\_avg}}{\text{Clear\_avg}} \times 255$$
+```
+$$\mathrm{RGB_{norm}} = \frac{\mathrm{RGB_{avg}}}{\mathrm{Clear_{avg}}} \times 255$$
+```
 
 ```cpp
 // Safety check: hindari pembagian 0
