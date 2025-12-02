@@ -580,7 +580,7 @@ Sensor warna TCS34725 mengukur intensitas cahaya dalam 4 channel:
 - **C (Clear)**: 0-1023 (IR + visible light)
 
 Normalisasi RGB penting untuk mengurangi pengaruh pencahayaan:
-$$\text{RGB}_{norm} = \frac{\text{RGB}_{raw}}{\text{Clear}_{raw}} \times 255$$
+$$\mathrm{RGB_{norm}} = \frac{\mathrm{RGB_{avg}}}{\mathrm{Clear_{avg}}} \times 255$$
 
 ### 📝 Arduino Code: Data Acquisition & Normalization (RGB.ino)
 
