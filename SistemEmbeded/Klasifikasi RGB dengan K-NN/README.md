@@ -580,9 +580,7 @@ Sensor warna TCS34725 mengukur intensitas cahaya dalam 4 channel:
 - **C (Clear)**: 0-1023 (IR + visible light)
 
 Normalisasi RGB penting untuk mengurangi pengaruh pencahayaan:
-$$
-RGB_{norm} = \frac{RGB_{raw}}{Clear_{raw}} \times 255
-$$
+$$\text{RGB}_{norm} = \frac{\text{RGB}_{raw}}{\text{Clear}_{raw}} \times 255$$
 
 ### 📝 Arduino Code: Data Acquisition & Normalization (RGB.ino)
 
@@ -629,7 +627,7 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725(
 
 Formula normalisasi menggunakan Clear Channel sebagai referensi intensitas:
 ```
-$$\mathrm{RGB_{norm}} = \frac{\mathrm{RGB_{avg}}}{\mathrm{Clear_{avg}}} \times 255$$
+$$\text{RGB\_norm} = \frac{\text{RGB\_avg}}{\text{Clear\_avg}} \times 255$$
 ```
 
 ```cpp
