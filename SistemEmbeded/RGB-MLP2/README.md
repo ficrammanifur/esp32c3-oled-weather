@@ -23,6 +23,7 @@ Klasifikasi Warna RGB Menggunakan K-Nearest Neighbors (K-NN)<br>
 
 - [Ringkasan Proyek](#ringkasan-proyek)
 - [Fitur Utama](#fitur-utama)
+- [Arsitektur Neural Network (MLP)](#arsitektur-neural-network-mlp)
 - [Desain Sistem](#desain-sistem)
 - [Persyaratan Hardware](#persyaratan-hardware)
 - [Persyaratan Software](#persyaratan-software)
@@ -82,6 +83,61 @@ Proyek ini adalah implementasi **end-to-end** algoritma machine learning K-NN un
 
 ---
 
+### Arsitektur Neural Network (MLP)
+
+Proyek menggunakan Multi-Layer Perceptron (MLP) dengan arsitektur sebagai berikut:
+
+#### Struktur Jaringan
+
+```
+Input Layer          Hidden Layer           Output Layer
+(3 neuron)          (8 neuron)              (4 neuron)
+
+   R ────────┐                           ┌──→ RED
+             │                           │
+   G ────────┼──→ [Hidden] ──→ Softmax ──┼──→ GREEN
+             │      (w,b)                │
+   B ────────┘                           ├──→ BLUE
+                                         │
+                                         └──→ NEUTRAL
+
+Aktivasi Hidden: Sigmoid σ(x) = 1 / (1 + e^(-x))
+Aktivasi Output: Softmax untuk probabilitas multi-class
+```
+
+#### Fungsi Aktivasi
+
+Jaringan menggunakan dua jenis fungsi aktivasi:
+
+1. **Sigmoid (Hidden Layer)**
+   - Rumus: σ(x) = 1 / (1 + e^(-x))
+   - Output range: (0, 1)
+   - Sifat: Smooth non-linear transformation
+   - Kegunaan: Pengenalan pola non-linear pada hidden layer
+
+2. **Softmax (Output Layer)**
+   - Rumus: σ(x_i) = e^(x_i) / Σ(e^(x_j))
+   - Output range: Probability distribution [0,1] yang sum to 1
+   - Sifat: Multi-class classification probability
+   - Kegunaan: Outputnya adalah probabilitas untuk setiap kelas warna
+
+![Activation Functions Visualization](/activation-functions.jpg)
+
+Grafik di atas menunjukkan:
+- **Kurva Sigmoid (biru)**: Smooth S-curve yang output antara 0-1
+- **Kurva Softmax (merah)**: Distribution probabilitas untuk 4 kelas output
+
+#### Parameter Model
+
+|   Layer   | Input | Output | Aktivasi | Weights | Biases |
+|-----------|-------|--------|----------|---------|--------|
+| Input     |   -   |    3   |     -    |    -    |    -   |
+| Hidden    |   3   |    8   | Sigmoid  | 3×8 = 24|    8   |
+| Output    |   8   |    4   | Softmax  | 8×4 = 32|    4   |
+| **Total** |   -   |   -    |     -    |  **56** | **12** |
+
+---
+
 ## 🔗 Google Colab: Cloud Training Environment
 
 Google Colab menyediakan environment gratis untuk training model K-NN tanpa perlu install software di komputer lokal. Anda dapat menjalankan notebook Python secara online dengan GPU/TPU support.
@@ -97,18 +153,18 @@ Google Colab menyediakan environment gratis untuk training model K-NN tanpa perl
 
 #### 1. Setup Colab Notebook
 
-\`\`\`python
+```python
 # Cell 1: Mount Google Drive (untuk save/load dataset)
 from google.colab import drive
 drive.mount('/content/drive')
 
 # Cell 2: Install required libraries
 !pip install numpy pandas scikit-learn matplotlib seaborn
-\`\`\`
+```
 
 #### 2. Buat Dataset Training
 
-\`\`\`python
+```python
 # Cell 3: Import libraries
 import numpy as np
 import pandas as pd
@@ -157,11 +213,11 @@ y = data_array[:, 3].astype(int)       # Labels (0=R, 1=G, 2=B, 3=N)
 print(f"Dataset Shape: {X.shape}")
 print(f"Classes: {np.unique(y)}")
 print(f"Samples per class: {np.bincount(y)}")
-\`\`\`
+```
 
 #### 3. Feature Scaling & Normalisasi
 
-\`\`\`python
+```python
 # Cell 5: Feature Scaling
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
@@ -182,11 +238,11 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 print(f"\nTrain set: {X_train.shape}, Test set: {X_test.shape}")
-\`\`\`
+```
 
 #### 4. Hyperparameter Tuning (K Value Search)
 
-\`\`\`python
+```python
 # Cell 6: Find optimal K value
 k_values = range(1, 21)
 train_scores = []
@@ -236,11 +292,11 @@ plt.grid(True, alpha=0.3, axis='y')
 
 plt.tight_layout()
 plt.show()
-\`\`\`
+```
 
 #### 5. Train Final Model & Evaluation
 
-\`\`\`python
+```python
 # Cell 7: Train final model dengan best K
 knn_final = KNeighborsClassifier(n_neighbors=best_k)
 knn_final.fit(X_train, y_train)
@@ -269,11 +325,11 @@ print(classification_report(y_test, y_pred, target_names=class_names))
 # Accuracy
 accuracy = accuracy_score(y_test, y_pred)
 print(f"\nOverall Accuracy: {accuracy:.4f} ({accuracy*100:.2f}%)")
-\`\`\`
+```
 
 #### 6. Ekstrak Centroid untuk Arduino
 
-\`\`\`python
+```python
 # Cell 8: Extract centroids (untuk implementasi embedded)
 # Centroid = rata-rata semua samples dari setiap class
 
@@ -291,11 +347,11 @@ print("const uint8_t centroids[4][3] = {")
 for i, centroid in enumerate(centroids_array):
     print(f"  {{{centroid[0]}, {centroid[1]}, {centroid[2]}}},  // {class_names[i]}")
 print("};")
-\`\`\`
+```
 
 #### 7. 3D Visualization
 
-\`\`\`python
+```python
 # Cell 9: Visualisasi 3D RGB Color Space
 fig = plt.figure(figsize=(12, 9))
 ax = fig.add_subplot(111, projection='3d')
@@ -323,11 +379,11 @@ ax.grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.show()
-\`\`\`
+```
 
 #### 8. Save Model & Hasil
 
-\`\`\`python
+```python
 # Cell 10: Save ke Google Drive
 import pickle
 import json
@@ -350,7 +406,7 @@ centroids_path = '/content/drive/MyDrive/centroids.json'
 with open(centroids_path, 'w') as f:
     json.dump(centroids_json, f, indent=2)
 print(f"Centroids saved to {centroids_path}")
-\`\`\`
+```
 
 ### Full Colab Notebook URL
 
@@ -367,19 +423,19 @@ Gunakan template lengkap di: [Google Colab - K-NN RGB Classifier](https://colab.
 
 Diagram berikut menunjukkan alur lengkap bagaimana data mengalir dari sensor hardware TCS34725 hingga menjadi keputusan klasifikasi:
 
-\`\`\`
+```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    HARDWARE / SENSOR                             │
+│                    HARDWARE / SENSOR                            │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  TCS34725 Photodiode Array                                      │
-│  ├─ Red Filter Channel     → Raw R (12-bit, 0-4095)            │
-│  ├─ Green Filter Channel   → Raw G (12-bit, 0-4095)            │
-│  ├─ Blue Filter Channel    → Raw B (12-bit, 0-4095)            │
-│  └─ Clear Channel (No Filter) → Raw C (for normalization)      │
+│  ├─ Red Filter Channel     → Raw R (12-bit, 0-4095)             │
+│  ├─ Green Filter Channel   → Raw G (12-bit, 0-4095)             │
+│  ├─ Blue Filter Channel    → Raw B (12-bit, 0-4095)             │
+│  └─ Clear Channel (No Filter) → Raw C (for normalization)       │
 │                                                                 │
-│  ↓ I2C Bus (100 kHz) → ESP32                                   │
-│
+│  ↓ I2C Bus (100 kHz) → ESP32                                    │
+│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
@@ -387,93 +443,94 @@ Diagram berikut menunjukkan alur lengkap bagaimana data mengalir dari sensor har
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  Circular Buffer (10 samples):                                  │
-│  ┌───────────────────────────────────────┐                     │
-│  │ r_buffer[0..9]    ← Raw R values     │                     │
-│  │ g_buffer[0..9]    ← Raw G values     │                     │
-│  │ b_buffer[0..9]    ← Raw B values     │                     │
-│  │ c_buffer[0..9]    ← Raw C values     │                     │
-│  └───────────────────────────────────────┘                     │
+│  ┌───────────────────────────────────────┐                      │
+│  │ r_buffer[0..9]    ← Raw R values     │                       │
+│  │ g_buffer[0..9]    ← Raw G values     │                       │
+│  │ b_buffer[0..9]    ← Raw B values     │                       │
+│  │ c_buffer[0..9]    ← Raw C values     │                       │
+│  └───────────────────────────────────────┘                      │
 │           ↓ (collect 10 samples)                                │
-│
+│                                                                 │
 │  Moving Average Filter (Noise Reduction):                       │
-│  ┌───────────────────────────────────────┐                     │
-│  │ avg_r = (r_buf[0] + ... + r_buf[9])/10│                     │
-│  │ avg_g = (g_buf[0] + ... + g_buf[9])/10│                     │
-│  │ avg_b = (b_buf[0] + ... + b_buf[9])/10│                     │
-│  │ avg_c = (c_buf[0] + ... + c_buf[9])/10│                     │
-│  └───────────────────────────────────────┘                     │
+│  ┌───────────────────────────────────────┐                      │
+│  │ avg_r = (r_buf[0] + ... + r_buf[9])/10│                      │
+│  │ avg_g = (g_buf[0] + ... + g_buf[9])/10│                      │
+│  │ avg_b = (b_buf[0] + ... + b_buf[9])/10│                      │
+│  │ avg_c = (c_buf[0] + ... + c_buf[9])/10│                      │
+│  └───────────────────────────────────────┘                      │
 │           ↓                                                     │
-│
+│                                                                 │
 │  RGB Normalization (using Clear Channel):                       │
-│  ┌──────────────────────────────────────────┐                  │
-│  │ r_norm = (avg_r / avg_c) × 255           │                  │
-│  │ g_norm = (avg_g / avg_c) × 255           │                  │
-│  │ b_norm = (avg_b / avg_c) × 255           │                  │
-│  │                                          │                  │
-│  │ Input to ML: [r_norm, g_norm, b_norm]   │                  │
-│  │              (range: 0-255)              │                  │
-│  └──────────────────────────────────────────┘                  │
-│
+│  ┌──────────────────────────────────────────┐                   │
+│  │ r_norm = (avg_r / avg_c) × 255           │                   │
+│  │ g_norm = (avg_g / avg_c) × 255           │                   │
+│  │ b_norm = (avg_b / avg_c) × 255           │                   │
+│  │                                          │                   │
+│  │ Input to ML: [r_norm, g_norm, b_norm]   │                    │
+│  │              (range: 0-255)              │                   │
+│  └──────────────────────────────────────────┘                   │
+│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 
-┌─────────────────────────────────────────────────────────────────┐
-│          NEURAL NETWORK / K-NN CLASSIFICATION                   │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  Stored Centroids (from Python training):                       │
-│  ┌────────────────────────────────────────┐                    │
-│  │ Centroid_RED:     [175, 54,  61]      │                    │
-│  │ Centroid_GREEN:   [105, 99,  60]      │                    │
-│  │ Centroid_BLUE:    [107, 88,  77]      │                    │
-│  │ Centroid_NEUTRAL: [150, 140, 130]     │                    │
-│  └────────────────────────────────────────┘                    │
-│           ↑                                                     │
-│           │ (Query: [r_norm, g_norm, b_norm])                 │
-│           ↓                                                     │
-│                                                                 │
-│  Distance Calculation (Euclidean):                              │
-│  ┌───────────────────────────────────────────────┐             │
-│  │ d_red   = √[(r_norm - 175)² + (g_norm - 54)² + (b_norm - 61)²]  │
-│  │ d_green = √[(r_norm - 105)² + (g_norm - 99)² + (b_norm - 60)²]  │
-│  │ d_blue  = √[(r_norm - 107)² + (g_norm - 88)² + (b_norm - 77)²]  │
-│  │ d_neut  = √[(r_norm - 150)² + (g_norm - 140)² + (b_norm - 130)²]│
-│  └───────────────────────────────────────────────┘             │
-│           ↓                                                     │
-│                                                                 │
-│  ArgMax (Find Minimum Distance):                                │
-│  ┌───────────────────────────────────────┐                     │
-│  │ predicted_class = argmin([d_red, d_green, d_blue, d_neut])│
-│  │ → Returns index 0-3                   │                     │
-│  └───────────────────────────────────────┘                     │
-│
-└─────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│          NEURAL NETWORK / K-NN CLASSIFICATION                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  Stored Centroids (from Python training):                           │
+│  ┌────────────────────────────────────────┐                         │
+│  │ Centroid_RED:     [175, 54,  61]       │                         │
+│  │ Centroid_GREEN:   [105, 99,  60]       │                         │
+│  │ Centroid_BLUE:    [107, 88,  77]       │                         │
+│  │ Centroid_NEUTRAL: [150, 140, 130]      │                         │
+│  └────────────────────────────────────────┘                         │
+│           ↑                                                         │
+│           │ (Query: [r_norm, g_norm, b_norm])                       │
+│           ↓                                                         │
+│                                                                     │
+│  Distance Calculation (Euclidean):                                  │
+│  ┌───────────────────────────────────────────────┐                  │
+│  │ d_red   = √[(r_norm - 175)² + (g_norm - 54)² + (b_norm - 61)²]   │
+│  │ d_green = √[(r_norm - 105)² + (g_norm - 99)² + (b_norm - 60)²]   │
+│  │ d_blue  = √[(r_norm - 107)² + (g_norm - 88)² + (b_norm - 77)²]   │
+│  │ d_neut  = √[(r_norm - 150)² + (g_norm - 140)² + (b_norm - 130)²] │
+│  └───────────────────────────────────────────────┘                  │
+│           ↓                                                         │
+│                                                                     │
+│  ArgMax (Find Minimum Distance):                                    │
+│  ��───────────────────────────────────────┐                         │
+│  │ predicted_class = argmin([d_red, d_green, d_blue, d_neut])       │
+│  │ → Returns index 0-3                   │                          │
+│  └───────────────────────────────────────┘                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
-│                      OUTPUT / DECISION                           │
+│                      OUTPUT / DECISION                          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  Predicted Class (0-3):                                         │
-│  ┌──────────────────────────────────────────┐                  │
-│  │ 0 → RED (LED Red menyala)              │                  │
-│  │ 1 → GREEN (LED Green menyala)          │                  │
-│  │ 2 → BLUE (LED Blue menyala)            │                  │
-│  │ 3 → NEUTRAL (Semua LED mati)           │                  │
-│  └──────────────────────────────────────────┘                  │
+│  ┌──────────────────────────────────────────┐                   │
+│  │ 0 → RED (LED Red menyala)                │                   │
+│  │ 1 → GREEN (LED Green menyala)            │                   │
+│  │ 2 → BLUE (LED Blue menyala)              │                   │
+│  │ 3 → NEUTRAL (Semua LED mati)             │                   │
+│  └──────────────────────────────────────────┘                   │ 
 │           ↓                                                     │
-│
+│                                                                 │
 │  Serial Monitor Output:                                         │
-│  ┌──────────────────────────────────────────┐                  │
-│  │ "175,54,61"     → Red detected         │                  │
-│  │ "105,99,60"     → Green detected       │                  │
-│  │ "107,88,77"     → Blue detected        │                  │
-│  │ "150,140,130"   → Neutral detected     │                  │
-│  └──────────────────────────────────────────┘                  │
-│
+│  ┌────────────────────────────────────────┐                     │
+│  │ "175,54,61"     → Red detected         │                     │
+│  │ "105,99,60"     → Green detected       │                     │
+│  │ "107,88,77"     → Blue detected        │                     │
+│  │ "150,140,130"   → Neutral detected     │                     │
+│  └────────────────────────────────────────┘                     │
+│                                                                 │
 │  Real-Time Output:                                              │
 │  └─ Cycle Time: ~100ms per prediction                           │
 │  └─ Latency: <200ms                                             │
-│
+│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
+```
 
 ### Penjelasan Tahap per Tahap:
 
@@ -536,57 +593,57 @@ Sistem embedded dirancang untuk deteksi warna portable dan real-time menggunakan
 
 #### Data Flow Diagram
 
-\`\`\`
+```
 ┌──────────────────────────────────────────────────────┐
 │            POWER SUPPLY & INITIALIZATION             │
 ├──────────────────────────────────────────────────────┤
-│ USB 5V → [Voltage Regulator 3.3V] → [3.3V Rail]    │
-│                          ↓                          │
-│                  ┌───────┴───────┐                  │
-│                  ↓               ↓                  │
-│              ESP32          TCS34725 Sensor         │
-│            Power Supply     Power Supply            │
+│ USB 5V → [Voltage Regulator 3.3V] → [3.3V Rail]      │
+│                          ↓                           │
+│                  ┌───────┴───────┐                   │
+│                  ↓               ↓                   │
+│              ESP32          TCS34725 Sensor          │
+│            Power Supply     Power Supply             │
 └──────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────┐
-│          I2C SENSOR DATA ACQUISITION                │
+│          I2C SENSOR DATA ACQUISITION                 │
 ├──────────────────────────────────────────────────────┤
-│  TCS34725 Sensor ──I2C─→ ESP32 I2C Master          │
-│  (RGBC Photodiode)       GPIO 21 (SDA)             │
-│                          GPIO 22 (SCL)             │
-│                          Freq: 100kHz              │
-│                          Addr: 0x29                │
+│  TCS34725 Sensor ──I2C─→ ESP32 I2C Master            │
+│  (RGBC Photodiode)       GPIO 21 (SDA)               │
+│                          GPIO 22 (SCL)               │
+│                          Freq: 100kHz                │
+│                          Addr: 0x29                  │
 └──────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────┐
-│       PROCESSING PIPELINE (ESP32 Main Loop)         │
+│       PROCESSING PIPELINE (ESP32 Main Loop)          │
 ├──────────────────────────────────────────────────────┤
-│ 1. Raw Data Acquisition (100ms cycle)              │
-│    └─ getTCS34725Data() → r, g, b, c               │
-│ 2. Circular Buffer (10 samples)                     │
-│    └─ r_buffer[10], g_buffer[10], ...              │
-│ 3. Moving Average (Noise Reduction)                │
-│    └─ avg_r = Σ(r_buffer) / 10                     │
-│ 4. RGB Normalization                               │
-│    └─ r_norm = (avg_r / avg_c) × 255               │
-│ 5. K-NN Classification                             │
-│    └─ d = √[(r-rc)² + (g-gc)² + (b-bc)²]           │
-│ 6. Output Serial + LED                             │
-│    └─ Serial: "R,G,B" @ 115200 baud                │
+│ 1. Raw Data Acquisition (100ms cycle)                │
+│    └─ getTCS34725Data() → r, g, b, c                 │
+│ 2. Circular Buffer (10 samples)                      │
+│    └─ r_buffer[10], g_buffer[10], ...                │
+│ 3. Moving Average (Noise Reduction)                  │
+│    └─ avg_r = Σ(r_buffer) / 10                       │
+│ 4. RGB Normalization                                 │
+│    └─ r_norm = (avg_r / avg_c) × 255                 │
+│ 5. K-NN Classification                               │
+│    └─ d = √[(r-rc)² + (g-gc)² + (b-bc)²]             │
+│ 6. Output Serial + LED                               │
+│    └─ Serial: "R,G,B" @ 115200 baud                  │
 └──────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────┐
 │        K-NN CLASSIFICATION ENGINE                    │
 ├──────────────────────────────────────────────────────┤
-│ Stored Centroids (dari training Python):            │
-│ • RED:     [175, 54,  61]                          │
-│ • GREEN:   [105, 99,  60]                          │
-│ • BLUE:    [107, 88,  77]                          │
-│ • NEUTRAL: [150, 140, 130]                         │
-│                                                    │
-│ Classification: Argmin(d) → Predicted Class        │
+│ Stored Centroids (dari training Python):             │
+│ • RED:     [175, 54,  61]                            │
+│ • GREEN:   [105, 99,  60]                            │
+│ • BLUE:    [107, 88,  77]                            │
+│ • NEUTRAL: [150, 140, 130]                           │
+│                                                      │
+│ Classification: Argmin(d) → Predicted Class          │
 └──────────────────────────────────────────────────────┘
-\`\`\`
+```
 
 ### Arsitektur Software (Python)
 
@@ -647,9 +704,9 @@ Program Python menggunakan scikit-learn untuk data processing, model training, d
 - **Python 3.8+**
 - **Jupyter Notebook** atau Google Colab
 - **Libraries**:
-  \`\`\`bash
+  ```bash
   pip install numpy pandas scikit-learn matplotlib seaborn
-  \`\`\`
+  ```
 
 ### Untuk Embedded (Arduino/ESP32)
 - **Arduino IDE** (Versi terbaru atau PlatformIO)
@@ -673,7 +730,7 @@ Program Python menggunakan scikit-learn untuk data processing, model training, d
 
 #### Koneksi TCS34725 ke ESP32
 
-\`\`\`
+```
 TCS34725 Pin    →    ESP32 Pin
 ─────────────────────────────
 VIN (1)         →    3.3V (dengan bypass cap 100µF)
@@ -683,18 +740,18 @@ SCL (4)         →    GPIO 22 (dengan pull-up 10kΩ ke 3.3V)
 INT (5)         →    GPIO 13 (optional, untuk interrupt)
 LED (6)         →    GND (active low)
 ADDR (7)        →    GND (set address 0x29)
-\`\`\`
+```
 
 #### Koneksi LED RGB (Optional)
 
-\`\`\`
+```
 LED RGB (Common Cathode) →    ESP32
 ─────────────────────────────────
 Red Anode (+)    →    GPIO 5  (via 220Ω resistor)
 Green Anode (+)  →    GPIO 6  (via 220Ω resistor)
 Blue Anode (+)   →    GPIO 7  (via 220Ω resistor)
 Cathode (-)      →    GND
-\`\`\`
+```
 
 ### 2. Setup Arduino IDE
 
@@ -715,7 +772,7 @@ Cathode (-)      →    GND
 
 ### 3. Setup Python Environment
 
-\`\`\`bash
+```bash
 # Clone atau download repository
 git clone <repository-url>
 cd rgb-knn-classifier
@@ -728,7 +785,7 @@ venv\Scripts\activate  # Windows
 
 # Install dependencies
 pip install numpy pandas scikit-learn matplotlib seaborn jupyter
-\`\`\`
+```
 
 ---
 
@@ -748,16 +805,16 @@ Dataset terdiri dari 40 sampel RGB dengan 4 kelas warna:
 ### Metodologi K-NN
 
 #### 1. **Feature Scaling**
-\`\`\`
+```
 Normalized_value = (raw_value - min_value) / (max_value - min_value)
-\`\`\`
+```
 Setiap fitur RGB di-scale ke range [0, 1] menggunakan StandardScaler.
 
 #### 2. **Distance Calculation**
-\`\`\`
+```
 Euclidean Distance:
 d = √[(r1 - r2)² + (g1 - g2)² + (b1 - b2)²]
-\`\`\`
+```
 
 #### 3. **K-NN Decision**
 Untuk setiap sample query, algoritma mencari K nearest neighbors dalam training data, kemudian mengklasifikasikan berdasarkan majority voting.
@@ -770,7 +827,7 @@ Untuk setiap sample query, algoritma mencari K nearest neighbors dalam training 
 ### Hasil Pelatihan
 
 #### Confusion Matrix (K=1)
-\`\`\`
+```
                 Predicted
               R    G    B    N
             ┌────┬────┬────┬────┐
@@ -779,10 +836,10 @@ Actual   R  │ 10 │ 0  │ 0  │ 0  │
          B  │ 0  │ 0  │ 10 │ 0  │
          N  │ 0  │ 0  │ 0  │ 10 │
             └────┴────┴────┴────┘
-\`\`\`
+```
 
 #### Classification Report (K=1)
-\`\`\`
+```
               Precision  Recall  F1-Score  Support
 RED              1.00    1.00      1.00      10
 GREEN            0.90    0.90      0.90      10
@@ -791,7 +848,7 @@ NEUTRAL          1.00    1.00      1.00      10
 
 ACCURACY:                                  0.9167 (36.67/40)
 WEIGHTED AVG:    0.9525  0.9525    0.9525    40
-\`\`\`
+```
 
 #### Performance Metrics
 - **Best K**: 1
@@ -809,7 +866,7 @@ WEIGHTED AVG:    0.9525  0.9525    0.9525    40
 #### Spesifikasi
 - **Interface**: I2C (2-wire serial)
 - **Operating Voltage**: 3.0V - 3.6V (3.3V recommended)
-- **ADC Resolution**: 12-bit per channel
+- **ADC Resolution**: 12-bit per channel (0-4095 digital values)
 - **Channels**: RGBC (Red, Green, Blue, Clear)
 - **Wavelength Range**: 370nm - 1000nm (full visible spectrum)
 - **I2C Address**: 0x29 (default)
@@ -825,7 +882,7 @@ WEIGHTED AVG:    0.9525  0.9525    0.9525    40
 
 #### Struktur Program
 
-\`\`\`cpp
+```cpp
 // 1. INITIALIZATION
 void setup() {
   Serial.begin(115200);           // Serial communication
@@ -873,9 +930,10 @@ void loop() {
     avg_c /= SAMPLES;
     
     // d. Normalisasi RGB menggunakan Clear Channel
-    uint8_t r_norm = constrain((avg_r * 255 / avg_c), 0, 255);
-    uint8_t g_norm = constrain((avg_g * 255 / avg_c), 0, 255);
-    uint8_t b_norm = constrain((avg_b * 255 / avg_c), 0, 255);
+    // Added +1 to avg_c to prevent division by zero if avg_c is 0
+    uint8_t r_norm = constrain((avg_r * 255) / (avg_c + 1), 0, 255);
+    uint8_t g_norm = constrain((avg_g * 255) / (avg_c + 1), 0, 255);
+    uint8_t b_norm = constrain((avg_b * 255) / (avg_c + 1), 0, 255);
     
     // e. K-NN Classification
     classifyColor(r_norm, g_norm, b_norm);
@@ -921,18 +979,18 @@ void classifyColor(uint8_t r, uint8_t g, uint8_t b) {
 
 // 4. LED FEEDBACK
 void setRGBLED(int color_class) {
-  digitalWrite(5, LOW);  // Reset all
-  digitalWrite(6, LOW);
-  digitalWrite(7, LOW);
+  digitalWrite(LED_R, LOW);  // Reset all
+  digitalWrite(LED_G, LOW);
+  digitalWrite(LED_B, LOW);
   
   switch(color_class) {
-    case 0: digitalWrite(5, HIGH); break;  // RED
-    case 1: digitalWrite(6, HIGH); break;  // GREEN
-    case 2: digitalWrite(7, HIGH); break;  // BLUE
+    case 0: digitalWrite(LED_R, HIGH); break;  // RED
+    case 1: digitalWrite(LED_G, HIGH); break;  // GREEN
+    case 2: digitalWrite(LED_B, HIGH); break;  // BLUE
     case 3: break;                          // NEUTRAL (off)
   }
 }
-\`\`\`
+```
 
 #### Key Functions
 
@@ -950,51 +1008,51 @@ void setRGBLED(int color_class) {
 
 ### Schematic Diagram
 
-\`\`\`
+```
 ┌──────────────────────────────────────────────────────────┐
 │                   ESP32 DEVKIT V1                        │
 │                                                          │
 │  ┌────────────────────────────────────┐                  │
-│  │ 3.3V ───┬── Bypass Cap (100µF) ──┬── GND         │  │
-│  │         │    + Ceramic (10µF)     │              │  │
-│  │         └───────────────┬─────────┘              │  │
-│  │                         ├─────────────────────┐   │  │
-│  │                         ↓                     ↓   │  │
-│  │                    ┌─────────────┐        ┌─────┐ │  │
-│  │                    │ TCS34725    │        │ LED │ │  │
-│  │                    │ RGB Sensor  │        │ RGB │ │  │
-│  │                    │             │        │     │ │  │
-│  │ GPIO 21 (SDA) ────→ SDA    GND ←─────────→ GND │ │  │
-│  │ GPIO 22 (SCL) ────→ SCL    VCC ←────┐   └─────┘ │  │
-│  │                    │             │    │          │  │
-│  │ GPIO 5 ──220Ω──→ R LED          │    └─────┐    │  │
-│  │ GPIO 6 ──220Ω──→ G LED          │          │    │  │
-│  │ GPIO 7 ──220Ω──→ B LED         I2C Pull-up│    │  │
-│  │                    │ (10kΩ each)│         │    │  │
-│  │                    │             │        └────┘ │  │
-│  │                    └─────────────┘               │  │
-│  │                                                   │  │
-│  │         [USB Micro-B]                            │  │
-│  │     TX/RX ↔ Serial Monitor                       │  │
-│  │     +5V  → Voltage Regulator (3.3V)              │  │
-│  │                                                   │  │
+│  │ 3.3V ───┬── Bypass Cap (100µF) ──┬── GND              │
+│  │         │    + Ceramic (10µF)     │                   │
+│  │         └───────────────┬─────────┘                   │
+│  │                         ├────────────────────┐        │
+│  │                         ↓                    ↓        │
+│  │                    ┌─────────────┐       ┌─────┐      │
+│  │                    │ TCS34725    │       │ LED │      │
+│  │                    │ RGB Sensor  │       │ RGB │      │
+│  │                    │             │       │     │      │
+│  │ GPIO 21 (SDA) ────→ SDA    GND ←─────────→ GND ←──→┐  │
+│  │ GPIO 22 (SCL) ────→ SCL    VCC ←────┐    └────┘│   │  │
+│  │                    │             │  │          │   │  │
+│  │ GPIO 5 ──220Ω──→ R LED           │  └─────┐    │   │  │
+│  │ GPIO 6 ──220Ω──→ G LED           │        │    │   │  │
+│  │ GPIO 7 ──220Ω──→ B LED         I2C Pull-up│    │   │  │
+│  │                    │ (10kΩ each)│         │    │   │  │
+│  │                    │             │        └────┘   │  │
+│  │                    └─────────────┘                 │  │
+│  │                                                    │  │
+│  │         [USB Micro-B]                              │  │
+│  │     TX/RX ↔ Serial Monitor                         │  │
+│  │     +5V  → Voltage Regulator (3.3V)                │  │
+│  │                                                    │  │
 │  └────────────────────────────────────────────────────┘  │
 └──────────────────────────────────────────────────────────┘
-\`\`\`
+```
 
 ### Breadboard Layout
 
-\`\`\`
-Sensor Side (Left)        |  Microcontroller Side (Right)
+```
+Sensor Side (Left)         |  Microcontroller Side (Right)
 ─────────────────────────────────────────────────────
-TCS34725:                 |  ESP32:
-  VCC → + Rail (3.3V)     |    3.3V → + Rail
-  GND → - Rail            |    GND → - Rail
+TCS34725:                  |  ESP32:
+  VCC → + Rail (3.3V)      |    3.3V → + Rail
+  GND → - Rail             |    GND → - Rail
   SDA → GPIO 21 (via 10kΩ) |    GPIO 21 ← SDA
   SCL → GPIO 22 (via 10kΩ) |    GPIO 22 ← SCL
-  INT → GPIO 13           |    GPIO 5,6,7 → LED RGB
-  LED → - Rail            |
-\`\`\`
+  INT → GPIO 13            |    GPIO 5,6,7 → LED RGB
+  LED → - Rail             |
+```
 
 ---
 
@@ -1011,7 +1069,7 @@ TCS34725:                 |  ESP32:
 
 ### Step 2: Upload Kode Arduino
 
-\`\`\`cpp
+```cpp
 // File: esp32_knn_classifier.ino
 
 #include <Wire.h>
@@ -1134,7 +1192,7 @@ void setRGBLED(int color_class) {
     case 3: break;                              // NEUTRAL
   }
 }
-\`\`\`
+```
 
 1. Copy kode di atas ke Arduino IDE
 2. Pilih Board: **ESP32 Dev Module**
@@ -1144,7 +1202,7 @@ void setRGBLED(int color_class) {
 
 ### Step 3: Jalankan Python Training Script
 
-\`\`\`bash
+```bash
 # Navigate to project directory
 cd rgb-knn-classifier
 
@@ -1153,7 +1211,7 @@ jupyter notebook train_knn_model.ipynb
 
 # Atau jalankan script Python langsung
 python train_knn_model.py
-\`\`\`
+```
 
 **Notebook akan**:
 1. Load dataset RGB dari CSV
@@ -1171,13 +1229,13 @@ python train_knn_model.py
    - LED RGB harus menyala sesuai warna yang terdeteksi
 
 2. **Expected Output**:
-   \`\`\`
+   ```
    TCS34725 initialized
    175,54,61      <- Red object detected
    105,99,60      <- Green object detected
    107,88,77      <- Blue object detected
    150,140,130    <- Neutral object detected
-   \`\`\`
+   ```
 
 3. **LED Behavior**:
    - Merah menyala: Red object detected
@@ -1191,7 +1249,7 @@ python train_knn_model.py
 
 ### Unit Testing (Python)
 
-\`\`\`python
+```python
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -1206,17 +1264,17 @@ y_pred = knn.predict(X_test)
 cm = confusion_matrix(y_test, y_pred)
 print(classification_report(y_test, y_pred))
 print(f"Accuracy: {knn.score(X_test, y_test):.4f}")
-\`\`\`
+```
 
 ### Integration Testing (Hardware)
 
 1. **Test Sensor Connectivity**:
-   \`\`\`cpp
+   ```cpp
    // Buka Serial Monitor
    // Periksa output: "TCS34725 initialized"
    // Letakkan tangan di depan sensor
    // Amati perubahan RGB values
-   \`\`\`
+   ```
 
 2. **Test Classification Accuracy**:
    - Test 20 sampel untuk setiap warna
@@ -1249,15 +1307,15 @@ print(f"Accuracy: {knn.score(X_test, y_test):.4f}")
 - Library Adafruit tidak terinstall
 
 **Solusi**:
-\`\`\`bash
+```bash
 # 1. Reinstall library Adafruit
 # Tools → Manage Libraries → Search "Adafruit TCS34725" → Uninstall → Install
 
 # 2. Check I2C connection
 # Gunakan I2C Scanner:
-\`\`\`
+```
 
-\`\`\`cpp
+```cpp
 #include <Wire.h>
 
 void setup() {
@@ -1275,12 +1333,12 @@ void loop() {
   }
   delay(5000);
 }
-\`\`\`
+```
 
 **Output yang diharapkan**:
-\`\`\`
+```
 Device found at 0x29
-\`\`\`
+```
 
 ### Problem: RGB Values Tidak Berubah / Stuck
 
@@ -1305,10 +1363,10 @@ Device found at 0x29
 
 **Solusi**:
 1. **Kalibrasi sensor**:
-   \`\`\`cpp
+   ```cpp
    // Set integration time lebih lama (50ms minimum)
    tcs.setIntegrationTime(50);
-   \`\`\`
+   ```
 
 2. **Kontrol cahaya**:
    - Gunakan LED tetap di atas sensor
@@ -1336,7 +1394,7 @@ Device found at 0x29
 
 ## 📂 Struktur Folder
 
-\`\`\`
+```
 rgb-knn-classifier/
 ├── README.md                          # Dokumentasi lengkap
 ├── train_knn_model.ipynb              # Jupyter Notebook untuk training
@@ -1369,7 +1427,7 @@ rgb-knn-classifier/
     ├── generate_dataset.py            # Generate synthetic dataset
     ├── calibrate_sensor.py            # Sensor calibration
     └── data_analysis.py               # Analisis data lebih lanjut
-\`\`\`
+```
 
 ---
 
@@ -1408,32 +1466,32 @@ Sensor TCS34725 menggunakan photodiode array dengan filter RGB untuk mengukur wa
 - **Output Format**: I2C, addressable, dapat multiple sensor pada 1 bus
 
 #### Normalisasi dengan Clear Channel:
-\`\`\`
+```
 R_norm = (R_raw / C_raw) × 255
 G_norm = (G_raw / C_raw) × 255
 B_norm = (B_raw / C_raw) × 255
-\`\`\`
+```
 
 Channel Clear (C) mengukur intensitas cahaya ambient dan digunakan untuk auto-scaling.
 
 ### Distance Metrics untuk Classification
 
 #### Euclidean Distance (digunakan dalam proyek ini):
-\`\`\`
+```
 d = √[(x1-x2)² + (y1-y2)² + (z1-z2)²]
-\`\`\`
+```
 Paling umum, intuitif, dan performa baik.
 
 #### Manhattan Distance (L1 norm):
-\`\`\`
+```
 d = |x1-x2| + |y1-y2| + |z1-z2|
-\`\`\`
+```
 Lebih cepat untuk komputasi di embedded systems.
 
 #### Cosine Similarity:
-\`\`\`
+```
 cos(θ) = (v1 · v2) / (||v1|| × ||v2||)
-\`\`\`
+```
 Baik untuk high-dimensional data atau normalized features.
 
 ### Referensi Bacaan
@@ -1486,10 +1544,6 @@ Proyek ini dilisensikan di bawah **MIT License**. Lihat file [LICENSE](LICENSE) 
 
 <p align="center">
   <a href="https://github.com/ficrammanifur/esp32-rgb-knn-classifier">
-    ⭐ Star this repository if you find it useful!
-  </a>
-</p>
-github.com/ficrammanifur/esp32-rgb-knn-classifier">
     ⭐ Star this repository if you find it useful!
   </a>
 </p>
