@@ -89,20 +89,42 @@ Proyek menggunakan Multi-Layer Perceptron (MLP) dengan arsitektur sebagai beriku
 
 #### Struktur Jaringan
 
-```
-Input Layer          Hidden Layer           Output Layer
-(3 neuron)          (8 neuron)              (4 neuron)
+```mermaid
+graph LR
+    subgraph Input ["Input Layer (3 Neurons)"]
+        R[RGB: R]
+        G[RGB: G]
+        B[RGB: B]
+    end
 
-   R ────────┐                           ┌──→ RED
-             │                           │
-   G ────────┼──→ [Hidden] ──→ Softmax ──┼──→ GREEN
-             │      (w,b)                │
-   B ────────┘                           ├──→ BLUE
-                                         │
-                                         └──→ NEUTRAL
+    subgraph Hidden ["Hidden Layer (8 Neurons)"]
+        H[(Hidden Neurons<br/>w, b)]
+    end
 
-Aktivasi Hidden: Sigmoid σ(x) = 1 / (1 + e^(-x))
-Aktivasi Output: Softmax untuk probabilitas multi-class
+    subgraph Output ["Output Layer (4 Neurons)"]
+        RED[RED]
+        GREEN[GREEN]
+        BLUE[BLUE]
+        NEUTRAL[NEUTRAL]
+    end
+
+    R -->|Input| H
+    G -->|Input| H
+    B -->|Input| H
+
+    H -->|"Sigmoid σ(x) = 1/(1+e^(-x))"| SOFT[Softmax]
+    SOFT --> RED
+    SOFT --> GREEN
+    SOFT --> BLUE
+    SOFT --> NEUTRAL
+
+    classDef input fill:#e1f5fe
+    classDef hidden fill:#f3e5f5
+    classDef output fill:#e8f5e8
+
+    class R,G,B input
+    class H hidden
+    class RED,GREEN,BLUE,NEUTRAL output
 ```
 
 #### Fungsi Aktivasi
