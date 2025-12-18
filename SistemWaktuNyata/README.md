@@ -778,7 +778,7 @@ Kontribusi sangat diterima! Project ini open-source dan siap dikembangkan bersam
 ### Cara Berkontribusi
 
 1. **Fork** repository ini → Click tombol Fork di GitHub
-2. **Clone** fork Anda → `git clone https://github.com/your-username/smart-air-quality-monitor.git`
+2. **Clone** fork Anda → `git clone https://github.com/ficrammanifur/SistemWaktuNyata.git`
 3. **Create branch** baru → `git checkout -b feature/AmazingFeature`
 4. **Commit** changes → `git commit -m 'Add some AmazingFeature'`
 5. **Push** ke branch → `git push origin feature/AmazingFeature`
@@ -829,61 +829,7 @@ Electrical Engineering | Embedded Systems | IoT Enthusiast | FreeRTOS Developer
 
 ---
 
-## 📄 Lisensi
-
-Project ini dilisensikan under **MIT License** - lihat file [LICENSE](LICENSE) untuk detail lengkap.
-
-```
-MIT License
-
-Copyright (c) 2025 Ficram Manifur Farissa
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-### Penggunaan Bebas
-✅ **Pembelajaran** - Gunakan untuk belajar ESP32, FreeRTOS, IoT  
-✅ **Riset** - Basis untuk research project atau paper  
-✅ **Proyek Akademik** - Skripsi, tugas akhir, thesis  
-✅ **Komersial** - Develop produk berbasis code ini (dengan attribution)  
-✅ **Modifikasi** - Fork, remix, improve sesuka hati  
-
-### Attribution
-Jika menggunakan project ini, mohon credit dengan link ke repository:
-> Based on [Smart Air Quality Monitor](https://github.com/ficrammanifur/sistem-waktu-nyata) by Ficram Manifur Farissa
-
----
-
-## 📞 Support & Contact
-
-Ada pertanyaan? Butuh bantuan? Hubungi kami:
-
-- **💬 GitHub Issues**: [Open an issue](https://github.com/ficrammanifur/sistem-waktu-nyata/issues) - Preferred untuk bugs dan feature requests
-- **📧 Email**: ficramm@gmail.com - Untuk private inquiries
-
----
-
 <div align="center">
-
-**⭐ Star project ini jika bermanfaat untuk pembelajaran Anda!**
-
-**🔔 Watch untuk update terbaru dan improvement**
 
 **🔱 Fork untuk develop fitur sendiri**
 
