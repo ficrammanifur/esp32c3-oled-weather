@@ -348,8 +348,8 @@ Default threshold: **GAS_THRESHOLD = 2000** (adjustable sesuai kalibrasi sensor)
 
 #### 1️⃣ Clone Repository
 ```bash
-git clone https://github.com/username/smart-air-quality-monitor.git
-cd smart-air-quality-monitor
+git clone https://github.com/ficrammanifur/esp32c3-oled-weather.git
+cd esp32c3-oled-weather/SistemWaktuNyata
 ```
 
 #### 2️⃣ Setup PlatformIO
