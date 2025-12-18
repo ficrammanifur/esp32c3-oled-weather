@@ -95,7 +95,7 @@ graph TD
 #### 🔌 Wiring Diagram
 
 <p align="center">
-  <img src="/assets/wiring_diagram.png?height=400&width=700" alt="Wiring Diagram" width="700"/><br/>
+  <img src="assets/wiring_diagram.png?height=400&width=700" alt="Wiring Diagram" width="700"/><br/>
   <em>Diagram Pengkabelan Lengkap ESP32 + MQ-2 + DS18B20</em>
 </p>
 
