@@ -261,14 +261,15 @@ graph TB
 > Simulasi Wokwi menampilkan monitoring real-time gas & suhu dengan alert system aktif saat threshold terlampaui. Data terupload ke dashboard ThingSpeak setiap 15 detik.
 
 <p align="center">
-  <img src="/assets/wokwi_simulation.png?height=400&width=700" alt="Demo Wokwi Simulation" width="700"/><br/>
+  <img src="assets/screenshots/wokwi_simulation.png" width="700"/><br/>
   <em>Demo simulasi Wokwi - Alert aktif saat gas ADC > threshold</em>
 </p>
 
 <p align="center">
-  <img src="/assets/thingspeak_dashboard.png?height=300&width=700" alt="ThingSpeak Dashboard" width="700"/><br/>
+  <img src="assets/screenshots/thingspeak_dashboard.png" width="700"/><br/>
   <em>ThingSpeak Dashboard - Field 1: Temperature, Field 2: Gas ADC, Field 3: Alert Status</em>
 </p>
+
 
 **Demo highlights:**
 - MQ-2 membaca nilai ADC 0-4095, threshold default 2000
