@@ -4,10 +4,6 @@
 </h1>
 
 <p align="center">
-  <img src="/assets/project_banner.png?height=400&width=700" alt="Project Banner" width="700"/>
-</p>
-
-<p align="center">
   <em>Sistem monitoring kualitas udara dan suhu berbasis ESP32 Dual-Core dengan FreeRTOS multitasking. Mendeteksi gas berbahaya (LPG, asap, alkohol) menggunakan MQ-2 dan suhu digital dengan DS18B20, upload real-time ke ThingSpeak cloud, dengan sistem alert LED & buzzer. Dapat disimulasikan penuh di Wokwi.</em>
 </p>
       
@@ -265,7 +261,7 @@ graph TB
 > Simulasi Wokwi menampilkan monitoring real-time gas & suhu dengan alert system aktif saat threshold terlampaui. Data terupload ke dashboard ThingSpeak setiap 15 detik.
 
 <p align="center">
-  <img src="/assets/wokwi_simulation.gif?height=400&width=700" alt="Demo Wokwi Simulation" width="700"/><br/>
+  <img src="/assets/wokwi_simulation.png?height=400&width=700" alt="Demo Wokwi Simulation" width="700"/><br/>
   <em>Demo simulasi Wokwi - Alert aktif saat gas ADC > threshold</em>
 </p>
 
@@ -735,7 +731,7 @@ smart-air-quality-monitor/
 │   ├── screenshots/
 │   │   ├── thingspeak_dashboard.png
 │   │   ├── serial_monitor.png
-│   │   └── wokwi_simulation.gif
+│   │   └── wokwi_simulation.png
 │   └── datasheets/
 │       ├── MQ-2_datasheet.pdf
 │       ├── DS18B20_datasheet.pdf
@@ -865,7 +861,7 @@ SOFTWARE.
 
 ### Attribution
 Jika menggunakan project ini, mohon credit dengan link ke repository:
-> Based on [Smart Air Quality Monitor](https://github.com/ficrammanifur/smart-air-quality-monitor) by Ficram Manifur Farissa
+> Based on [Smart Air Quality Monitor](https://github.com/ficrammanifur/sistem-waktu-nyata) by Ficram Manifur Farissa
 
 ---
 
@@ -873,8 +869,8 @@ Jika menggunakan project ini, mohon credit dengan link ke repository:
 
 Ada pertanyaan? Butuh bantuan? Hubungi kami:
 
-- **💬 GitHub Issues**: [Open an issue](https://github.com/ficrammanifur/smart-air-quality-monitor/issues) - Preferred untuk bugs dan feature requests
-- **📧 Email**: ficramm@example.com - Untuk private inquiries
+- **💬 GitHub Issues**: [Open an issue](https://github.com/ficrammanifur/sistem-waktu-nyata/issues) - Preferred untuk bugs dan feature requests
+- **📧 Email**: ficramm@gmail.com - Untuk private inquiries
 
 ---
 
