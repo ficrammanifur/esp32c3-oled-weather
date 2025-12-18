@@ -332,8 +332,13 @@ flowchart TD
 Alert akan aktif jika salah satu kondisi terpenuhi:
 
 $$
-\text{Alert} = (\text{Gas ADC} \geq \text{GAS\_THRESHOLD}) \lor (\text{Temperature} \geq 50.0°C)
+\mathrm{Alert}
+=
+(\mathrm{Gas_{ADC}} \ge \mathrm{GAS_{THRESHOLD}})
+\lor
+(\mathrm{Temperature} \ge 50.0^\circ\mathrm{C})
 $$
+
 
 Default threshold: **GAS_THRESHOLD = 2000** (adjustable sesuai kalibrasi sensor)
 
