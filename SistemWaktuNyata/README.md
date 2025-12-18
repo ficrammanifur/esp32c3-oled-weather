@@ -270,6 +270,10 @@ graph TB
   <em>ThingSpeak Dashboard - Field 1: Temperature, Field 2: Gas ADC, Field 3: Alert Status</em>
 </p>
 
+<p align="center">
+  <img src="assets/screenshots/serial_monitor.png" width="700"/><br/>
+  <em>Serial Monitor – Log nilai Gas ADC, Suhu, dan Status Alert secara real-time</em>
+</p>
 
 **Demo highlights:**
 - MQ-2 membaca nilai ADC 0-4095, threshold default 2000
