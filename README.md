@@ -4,6 +4,15 @@
 
 ---
 
+## Informasi Mahasiswa
+
+**Nama**: Ficram Manifur Farissa  
+**NPM**: 2222104036  
+**Mata Kuliah**: Sistem Waktu Nyata  
+**Repository**: https://github.com/ficrammanifur/esp32c3-oled-weather/tree/main/SistemWaktuNyata
+
+---
+
 ## Abstrak
 
 Dokumen ini memaparkan implementasi sistem monitoring kualitas udara dan suhu lingkungan secara real-time menggunakan mikrokontroler ESP32 dengan arsitektur FreeRTOS dual-core. Sistem mampu mendeteksi gas berbahaya (LPG, asap, alkohol) melalui sensor MQ-2 dan mengukur suhu digital dengan sensor DS18B20, kemudian mengirimkan data ke platform cloud ThingSpeak melalui protokol HTTP. Sistem dilengkapi mekanisme alert otomatis berupa LED dan buzzer yang aktif ketika parameter lingkungan melampaui ambang batas yang telah ditentukan. Seluruh implementasi dapat disimulasikan menggunakan platform Wokwi untuk validasi fungsionalitas sebelum implementasi hardware fisik.
@@ -204,7 +213,7 @@ Proses inisialisasi sistem mencakup tahapan berikut:
 
 ```
 ┌─────────────┐      ┌──────────────┐
-│   MQ-2      │─ADC──▶│              │
+│   MQ-2      │─ADC─▶│              │
 │ Gas Sensor  │      │              │
 └─────────────┘      │              │
                      │              │
@@ -308,12 +317,12 @@ Sistem mengimplementasikan arsitektur multitasking dengan pemisahan task berdasa
          │ - Update LED    │   │ - Error Handling  │
          │ - Update Buzzer │   │ - Retry Logic     │
          └────────┬────────┘   └────┬──────────────┘
-                  │                  │
-                  └────────┬─────────┘
+                  │                 │
+                  └────────┬────────┘
                            │
                   ┌────────▼────────┐
                   │ Semaphore Mutex │
-                  │ (Data Protection)│
+                  │(Data Protection)│
                   │                 │
                   │ Protected Data: │
                   │ - temperature   │
@@ -502,16 +511,16 @@ Format output Serial Monitor yang dihasilkan:
   ✓ SensorTask created on Core 0 (Priority 1)
   ✓ NetworkTask created on Core 1 (Priority 2)
 
-┌──────────────────────────────────────────────────┐
-│  Time  │  Temp(°C) │ Gas(ADC) │   Alert          │
-├──────────────────────────────────────────────────┤
-│     1s │  25.50    │  1234    │    OFF           │
-│     2s │  25.62    │  1256    │    OFF           │
-│     3s │  25.75    │  2345    │    ON            │
-├──────────────────────────────────────────────────┤
+┌────────────────────────────────────────────────────┐
+│  Time    │   Temp(°C)  │   Gas(ADC) │   Alert      │
+├────────────────────────────────────────────────────┤
+│     1s   │    25.50    │    1234    │    OFF       │
+│     2s   │    25.62    │    1256    │    OFF       │
+│     3s   │    25.75    │    2345    │    ON        │
+├────────────────────────────────────────────────────┤
 [NETWORK] Uploading: Temp=25.75°C, Gas=2345, Alert=1
 [NETWORK] ✓ Upload successful (HTTP 200)
-└──────────────────────────────────────────────────┘
+└────────────────────────────────────────────────────┘
 ```
 
 ---
