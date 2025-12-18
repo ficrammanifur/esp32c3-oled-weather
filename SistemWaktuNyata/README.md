@@ -892,4 +892,4 @@ Ada pertanyaan? Butuh bantuan? Hubungi kami:
 
 ---
 
-*Last updated: January 2025 | Version 1.0*
+*Last updated: Desember 2025 | Version 1.0*
